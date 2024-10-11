@@ -3,16 +3,16 @@ import Header from "../Layout/Header";
 
 const LoanDetail = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="font-sans flex flex-col min-h-screen">
       {/* Header */}
       <Header />
 
-      <div className="flex flex-col md:flex-row min-h-screen bg-[#ffff]">
+      <div className="font-sans flex flex-col md:flex-row min-h-screen bg-[#ffff]">
         
         {/* Sidebar for Loan Management */}
-        <div className="w-full md:w-1/4 bg-white p-4 shadow-md md:h-screen">
-          <div className="border border-[#C4C4C4] p-4 rounded-lg">
-            <h2 className="text-[24px] font-bold mb-4 text-left">
+        
+          <div className="font-sans border border-[#C4C4C4] md:p-6 p-3 rounded-lg md:m-9 m-5 md:w-[28%]">
+            <h2 className="font-sans text-[24px] font-bold mb-4 text-left">
               Loan Management
             </h2>
 
@@ -21,9 +21,9 @@ const LoanDetail = () => {
               <input
                 type="text"
                 placeholder="Search Loans"
-                className="w-full p-3 pr-10 shadow-md border rounded-md border-[#C4C4C4] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
+                className="font-sans w-full p-3 pr-10 shadow-md border rounded-md border-[#C4C4C4] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
               />
-              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#C4C4C4]">
+              <span className="font-sans absolute right-4 top-1/2 transform -translate-y-1/2 text-[#C4C4C4]">
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -49,82 +49,82 @@ const LoanDetail = () => {
                   key={index}
                   className={`${
                     index === 0 ? "bg-[#EFEFEF]" : "bg-[#fff]"
-                  } border border-[#C4C4C4] p-4 rounded-lg shadow-md flex justify-between items-center`}
+                  } border font-sans border-[#C4C4C4] p-4 rounded-lg shadow-md flex justify-between items-center`}
                 >
-                  <div className="text-left w-[90%]">
-                    <h3 className="text-[32px] font-bold text-[#646464]">
+                  <div className="font-sans text-left w-[90%]">
+                    <h3 className="font-sans text-[32px] font-bold text-black">
                       {loanId}
                     </h3>
-                    <p className="text-[#646464]">$1500</p>
-                    <p className="text-[#646464]">Due Date : 28-09-2024</p>
+                    <p className="font-sans text-[#646464]">$1500</p>
+                    <p className="font-sans text-[#646464]">Due Date : 28-09-2024</p>
                   </div>
                   <div className="space-y-2">
-                    <button className="border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
+                    {/* <button className="border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
                       Pending
-                    </button>
-                    <button className="border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
+                    </button> */}
+                    <div className="mt-14">
+                    <span className="font-sans border-2 border-black font-bold text-black py-1 px-4 rounded-lg ">
                       Pending
-                    </button>
+                    </span></div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-
+        
         {/* Main Content Area */}
-        <div className="w-full md:w-3/4 p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="font-sans w-full md:w-3/4 md:p-6 p-4">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
             {/* Loan ID and Name */}
-            <h1 className="text-[32px] font-bold">L001 - John Doe</h1>
+            <h1 className="text-[32px] text-left font-bold mb-4 font-sans">L001 - John Doe</h1>
 
             {/* Approve/Reject Buttons */}
             <div className="flex space-x-4">
-              <button className="px-10 py-3 border border-[#5EB66E] text-[#5EB66E] rounded-lg">
+              <span className="font-sans px-10 py-3 border border-[#5EB66E] text-[#5EB66E] rounded-lg">
                 Reject
-              </button>
-              <button className="px-10 py-3 bg-[#5EB66E] text-white rounded-lg">
+              </span>
+              <span className="font-sans px-10 py-3 bg-[#5EB66E] text-white rounded-lg">
                 Approve
-              </button>
+              </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="font-sans grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Borrowers Profile */}
-            <div className="bg-white p-6 rounded-lg shadow border text-left border-[#C4C4C4]">
-              <h2 className="text-[24px] text-[#383838] font-extrabold mb-4">
+            <div className="font-sans bg-white p-6 rounded-lg shadow border text-left border-[#C4C4C4]">
+              <h2 className="font-sans text-[24px] text-[#383838] font-extrabold mb-4">
                 Borrowers Profile - L001
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#FCFCFC] w-full">
                 <div className="flex flex-col">
-                  <span className="font-normal text-[16px] text-[#646464]">
+                  <span className="font-sans font-normal text-[16px] text-[#646464]">
                     Name:
                   </span>
-                  <span className="font-semibold text-[18px] text-[#383838]">
+                  <span className="font-sans font-semibold text-[18px] text-[#383838]">
                     Stebin
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-normal text-[16px] text-[#646464]">
+                  <span className="font-sans font-normal text-[16px] text-[#646464]">
                     Loan Amount:
                   </span>
-                  <span className="font-semibold text-[18px] text-[#383838]">
+                  <span className="font-sans font-semibold text-[18px] text-[#383838]">
                     $1500
                   </span>
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-normal text-[16px] text-[#646464]">
+                <div className="font-sans flex flex-col">
+                  <span className="font-sans font-normal text-[16px] text-[#646464]">
                     Application Date:
                   </span>
-                  <span className="font-semibold text-[18px] text-[#383838]">
+                  <span className="font-sans font-semibold text-[18px] text-[#383838]">
                     28-09-2024
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-normal text-[16px] text-[#646464]">
+                  <span className="font-sans font-normal text-[16px] text-[#646464]">
                     Status:
                   </span>
-                  <span className="font-semibold text-[18px] text-[#383838]">
+                  <span className=" font-sans font-semibold text-[18px] text-[#383838]">
                     Pending
                   </span>
                 </div>
@@ -133,33 +133,33 @@ const LoanDetail = () => {
 
             {/* Compliance Checklist */}
             <div className="bg-white p-6 rounded-lg shadow border border-[#C4C4C4]">
-              <h2 className="text-[24px] text-[#383838] font-extrabold mb-4 text-left">
+              <h2 className="text-[24px] font-sans text-[#383838] font-extrabold mb-4 text-left">
                 Compliance Checklist
               </h2>
               <div className="space-y-4 w-full">
                 <div className="flex justify-between">
-                  <span className="text-[#242424] text-[14px] font-semibold">
+                  <span className="text-[#242424] font-sans text-[14px] font-semibold">
                     KYC (Know Your Customer)
                   </span>
-                  <button className="px-5 py-1 border-2 font-bold rounded-lg text-[#242424] border-[#242424]">
+                  <span className="px-5 py-1 font-sans border-2 font-bold rounded-lg text-[#242424] border-[#242424]">
                     View
-                  </button>
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#242424] text-[14px] font-semibold">
+                  <span className="font-sans text-[#242424] text-[14px] font-semibold">
                     Anti-Fraud Checks
                   </span>
-                  <button className="px-5 py-1 border-2 font-bold rounded-lg text-[#242424] border-[#242424]">
+                  <span className="font-sans px-5 py-1 border-2 font-bold rounded-lg text-[#242424] border-[#242424]">
                     View
-                  </button>
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#242424] text-[14px] font-semibold">
+                  <span className="font-sans text-[#242424] text-[14px] font-semibold">
                     Regulatory Requirements
                   </span>
-                  <button className="px-5 py-1 border-2 font-bold rounded-lg text-[#242424] border-[#242424]">
+                  <span className="font-sans px-5 py-1 border-2 font-bold rounded-lg text-[#242424] border-[#242424]">
                     View
-                  </button>
+                  </span>
                 </div>
               </div>
             </div>
@@ -167,62 +167,62 @@ const LoanDetail = () => {
 
           {/* Repayment History */}
           <div className="mt-6 bg-white p-6 rounded-lg w-full md:w-[65%] shadow border border-[#C4C4C4] ">
-            <h2 className="text-[24px] text-[#383838] font-extrabold mb-4 text-left">
+            <h2 className="font-sans text-[24px] text-[#383838] font-extrabold mb-4 text-left">
               Repayment History
             </h2>
 
             <table className="w-full text-left">
               <thead>
                 <tr className="text-[#E2E5E9]">
-                  <th className="py-2 text-[#646464] font-normal text-[16px] w-[60%] md:w-[55%]">
+                  <th className=" font-sans py-2 text-[#646464] font-normal text-[16px] w-[60%] md:w-[55%]">
                     Date
                   </th>
-                  <th className="py-2 text-[#646464] font-normal text-[16px]">
+                  <th className="font-sans py-2 text-[#646464] font-normal text-[16px]">
                     Amount
                   </th>
-                  <th className="py-2 text-[#646464] font-normal text-[16px] text-right">
+                  <th className="font-sans py-2 text-[#646464] font-normal text-[16px] text-right">
                     Status
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-t">
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px] w-[60%] md:w-[55%]">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px] w-[60%] md:w-[55%]">
                     05/09/2024
                   </td>
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px]">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px]">
                     $1500
                   </td>
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px] text-right">
-                    <button className="border-2 border-[#242424] font-bold text-[16px] text-[#242424] py-1 px-4 rounded-lg">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px] text-right">
+                    <span className="font-sans border-2 border-[#242424] font-bold text-[16px] text-[#242424] py-1 px-4 rounded-lg">
                       Paid
-                    </button>
+                    </span>
                   </td>
                 </tr>
                 <tr className="border-t">
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px] w-[60%] md:w-[55%]">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px] w-[60%] md:w-[55%]">
                     05/09/2024
                   </td>
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px]">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px]">
                     $1500
                   </td>
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px] text-right">
-                    <button className="border-2 border-[#242424] font-bold text-[16px] text-[#242424] py-1 px-4 rounded-lg">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px] text-right">
+                    <span className="border-2 border-[#242424] font-bold text-[16px] text-[#242424] py-1 px-4 rounded-lg">
                       Paid
-                    </button>
+                    </span>
                   </td>
                 </tr>
-                <tr className="border-t">
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px] w-[60%] md:w-[55%]">
+                <tr className="font-sans border-t">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px] w-[60%] md:w-[55%]">
                     05/09/2024
                   </td>
-                  <td className="py-2 text-[#373D46] font-semibold text-[18px]">
+                  <td className="font-sans py-2 text-[#373D46] font-semibold text-[18px]">
                     $1500
                   </td>
                   <td className="py-2 text-[#373D46] font-semibold text-[18px] text-right">
-                    <button className="border-2 border-[#242424] font-bold text-[16px] text-[#242424] py-1 px-4 rounded-lg">
+                    <span className="font-sans border-2 border-[#242424] font-bold text-[16px] text-[#242424] py-1 px-4 rounded-lg">
                       Overdue
-                    </button>
+                    </span>
                   </td>
                 </tr>
               </tbody>

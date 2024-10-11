@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
+import { BiLogOutCircle } from "react-icons/bi";
+import Swal from 'sweetalert2';
 const ApplyForLoan = () => {
   const navigate = useNavigate();
   const [loanAmount, setLoanAmount] = useState(1200);
@@ -8,10 +9,37 @@ const ApplyForLoan = () => {
 
   const handleSliderChange = (e) => {
     setLoanAmount(e.target.value);
-  };
+    };
 
   const handleRepaymentChange = (e) => {
     setRepaymentTerm(e.target.value);
+  };
+  
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to logout?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5EB66E',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, logout!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Logged out!',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        // After the confirmation and success message, navigate to the homepage.
+        setTimeout(() => {
+          navigate('/');
+        }, 2000); // Wait for 2 seconds before navigating
+      }
+    });
   };
 
   return (
@@ -19,7 +47,7 @@ const ApplyForLoan = () => {
     <div className="bg-white shadow-md rounded-lg w-full max-w-md h-full min-h-screen flex flex-col justify-between ">
       {/* Header */}
       <div>
-        <div className="flex items-center  border-b  bg-[#0000]">
+        <div className="font-sans flex items-center  border-b  bg-[#0000]">
           <button onClick={() => {
    navigate('/verification');
   }}  className="mr-4 text-[#383838] m-4 ">
@@ -39,20 +67,29 @@ const ApplyForLoan = () => {
               />
             </svg>
           </button>
-          <h1 className="text-[18px] font-extrabold text-[#383838] m-4">
+          <h1 className="font-sans text-[18px] font-extrabold text-[#383838] font-sans ">
           Apply for a Microloan
           </h1>
+          <div className="ml-auto relative group mr-3">
+          <button className="font-sans flex items-center" onClick={handleLogout}>
+          <BiLogOutCircle size={25} className="text-[#383838]" />
+        </button>
+        {/* Tooltip */}
+        <span className="font-sans absolute top-[30px] right-0 w-max px-2 py-1 text-xs text-white bg-gray-600 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+          Logout
+        </span>
+      </div>
         </div>
 
         <div className="p-4 text-left"> {/* Added text-left to align the content */}
         {/* <h1 className="text-[18px] font-extrabold text-[#383838] mb-4">Apply for a Microloan</h1> */}
-          <p className="text-[#646464] mb-4 font-bold text-[15px]">
+          <p className="font-sans text-[#646464] mb-4 font-bold text-[15px]">
             Get a loan between $1000 to $1500 with flexible repayment terms
           </p>
 
           <div className="mt-4">
-            <p className="text-[#555555] font-bold text-[15px] mb-3">Loan Amount</p>
-            <p className="text-[18px] font-semibold text-[#3F455D]">${loanAmount}</p>
+            <p className="font-sans text-[#555555] font-bold text-[15px] mb-3">Loan Amount</p>
+            <p className="font-sans text-[18px] font-semibold text-[#3F455D]">${loanAmount}</p>
           </div>
 
           <div className="mt-3">
@@ -65,7 +102,7 @@ const ApplyForLoan = () => {
                 step={100}
                 value={loanAmount}
                 onChange={handleSliderChange}
-                className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                className="font-sans w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 style={{
                   background: `linear-gradient(to right, #4caf50 ${
                     ((loanAmount - 1000) / 500) * 100
@@ -76,8 +113,8 @@ const ApplyForLoan = () => {
            
             </div>
             <div className="flex justify-between text-gray-400 text-sm mb-1">
-              <span className="text-[#9299B5] font-normal text-[14px]">$1000</span>
-              <span  className="text-[#9299B5] font-normal text-[14px]">$1500</span>
+              <span className="font-sans text-[#9299B5] font-normal text-[14px]">$1000</span>
+              <span  className="font-sans text-[#9299B5] font-normal text-[14px]">$1500</span>
             </div>
           </div>
 
@@ -121,7 +158,7 @@ const ApplyForLoan = () => {
 
           {/* Repayment Term Dropdown */}
           <div className="mt-6">
-          <label htmlFor="firstName" className=" mb-3 block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left ">Repayment Term</label>
+          <label htmlFor="firstName" className=" font-sans mb-3 block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left ">Repayment Term</label>
            
 
           <select
@@ -130,7 +167,7 @@ const ApplyForLoan = () => {
                 onChange={handleRepaymentChange}
                 name="repaymentTerm"
                
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                className="font-sans w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
               >
                <option value={3}>3 Months</option>
               <option value={6}>6 Months</option>
@@ -142,15 +179,15 @@ const ApplyForLoan = () => {
              </div>
 
           {/* Risk Profile Section */}
-          <div className="mt-6 bg-green-50 p-4 rounded-lg">
-            <p className="font-semibold text-[#0D0D0D]">• Risk Profile</p>
-            <div className="flex items-center my-1">
-              <span className="h-3 w-3 bg-[#5EB66E] rounded-full inline-block mr-2"></span>
-              <p className="font-medium text-[14px]">Low</p>
+          <div className="font-sans mt-6 bg-green-50 p-4 rounded-lg">
+            <p className="font-sans font-semibold text-[#0D0D0D]">• Risk Profile</p>
+            <div className="font-sans flex items-center my-1">
+              <span className="font-sans h-3 w-3 bg-[#5EB66E] rounded-full inline-block mr-2"></span>
+              <p className="font-sans font-medium text-[14px]">Low</p>
             </div>
-            <p className="font-semibold mt-4 text-[#0D0D0D]">• Estimated Interest Rate</p>
-            <p className="text-4xl text-[#0D0D0D] font-bold mt-2">8.5 %</p>
-            <p className="text-[#646464]">Based on your risk profile</p>
+            <p className="font-sans font-semibold mt-4 text-[#0D0D0D]">• Estimated Interest Rate</p>
+            <p className="font-sans text-4xl text-[#0D0D0D] font-bold mt-2">8.5 %</p>
+            <p className="font-sans text-[#646464]">Based on your risk profile</p>
           </div>
 
           {/* Apply Button */}
@@ -164,7 +201,7 @@ const ApplyForLoan = () => {
       <div className="p-4">
         <button   onClick={() => {
     navigate('/loanconfirmation');
-  }}  className="w-full bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
+  }}  className="w-full font-sans bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
         >
            Apply for Loan
         </button>

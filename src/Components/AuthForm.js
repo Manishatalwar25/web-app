@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Logo from "../assets/images/logo.png"; 
+import { ToastContainer, toast } from 'react-toastify';  // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import toastify CSS
+import Logo from "../assets/images/logo.png";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 
@@ -15,20 +17,20 @@ const AuthForm = ({ onLogin }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    
+
     if (isLogin) {
       // Handling login logic
       console.log("Logging in with:", data.email, data.password);
-      alert("Login successful!");
-      onLogin();
+      toast.success("Login successful!");  // Show success toast on login
+      
       setTimeout(() => {
+        onLogin();
         navigate("/kyc-profile");  // Navigate to KYC profile after login
       }, 2000);
-      
     } else {
       // Handling sign-up logic
       console.log("Signing up with:", data.firstName, data.lastName, data.email, data.password);
-      alert("Sign Up successful!");
+      toast.success("Signup successful!");  // Show success toast on sign-up
       setTimeout(() => {
         setIsLogin(true);  // Switch to login form after 2 seconds
       }, 2000);
@@ -36,30 +38,28 @@ const AuthForm = ({ onLogin }) => {
   };
 
   return (
-    <div className="flex justify-center   ">
-      {/* Apply the same height to both forms */}
-      <div className="bg-white shadow-md rounded-lg w-full max-w-md p-6 h-full min-h-screen ">         <div className="flex justify-center mb-2">
+    <div className="flex justify-center min-h-screen font-sans">
+      <div className="bg-white shadow-md rounded-lg w-full max-w-md p-6 h-full min-h-screen">
+        <div className="flex justify-center mb-2">
           <img src={Logo} alt="logo" className="w-17 h-17 mt-6" />
         </div>
 
         {/* Toggle between Sign Up and Login */}
         <div className="flex mb-6 relative mt-8">
-          {/* Sign Up Button */}
           <button
             type="button"
             onClick={() => setIsLogin(false)}
-            className={`relative  font-normal  text-[16px] flex-1 py-2 ${!isLogin ? 'bg-[#5EB66E] text-white' : 'bg-[#E5E5E5] text-black'} 
+            className={`font-sans relative font-normal text-[16px] flex-1 py-2 ${!isLogin ? 'bg-[#5EB66E] text-white' : 'bg-[#E5E5E5] text-black'}
             rounded-lg focus:outline-none transition duration-300 z-10`}
-            style={{ marginRight: '-10px' }}  // This will make the overlap
+            style={{ marginRight: '-10px' }}
           >
             Sign Up
           </button>
 
-          {/* Login Button */}
           <button
             type="button"
             onClick={() => setIsLogin(true)}
-            className={`relative text-[16px] flex-1 py-2 ${isLogin ? 'bg-[#5EB66E] text-white' : 'bg-[#E5E5E5] text-black'} 
+            className={`relative text-[16px] flex-1 py-2 ${isLogin ? 'bg-[#5EB66E] text-white' : 'bg-[#E5E5E5] text-black'}
             rounded-r-lg focus:outline-none transition duration-300 z-0`}
           >
             Login
@@ -67,10 +67,9 @@ const AuthForm = ({ onLogin }) => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-6 text-left">
           {!isLogin && (
             <>
-              {/* First Name */}
               <div className='mt-3'>
                 <label htmlFor="firstName" className="block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-1">First Name</label>
                 <input
@@ -79,10 +78,9 @@ const AuthForm = ({ onLogin }) => {
                   {...register("firstName", { required: "First name is required" })}
                   className="text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                 />
-                {errors.firstName && <span className="text-red-500 text-[16px]">{errors.firstName.message}</span>}
+                {errors.firstName && <span className="text-red-500 text-[16px] text-left">{errors.firstName.message}</span>}
               </div>
 
-              {/* Last Name */}
               <div className='mt-3'>
                 <label htmlFor="lastName" className="block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-1">Last Name</label>
                 <input
@@ -91,12 +89,11 @@ const AuthForm = ({ onLogin }) => {
                   {...register("lastName", { required: "Last name is required" })}
                   className="text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
                 />
-                {errors.lastName && <span className="text-red-500 text-[16px]">{errors.lastName.message}</span>}
+                {errors.lastName && <span className="text-left text-red-500 text-[16px]">{errors.lastName.message}</span>}
               </div>
             </>
           )}
 
-          {/* Email */}
           <div className='mt-3'>
             <label htmlFor="email" className="block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-1">Email</label>
             <input
@@ -111,10 +108,9 @@ const AuthForm = ({ onLogin }) => {
               })}
               className="text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
             />
-            {errors.email && <span className="text-red-500 text-[16px]">{errors.email.message}</span>}
+            {errors.email && <span className="text-left text-red-500 text-[16px]">{errors.email.message}</span>}
           </div>
 
-          {/* Password */}
           <div className="relative mt-3">
             <label htmlFor="password" className="block text-[#8F959E] text-[16px] font-sans text-base leading-[21.82px] text-left mb-1">Password</label>
             <input
@@ -136,10 +132,9 @@ const AuthForm = ({ onLogin }) => {
             >
               {showPassword ? <IoEyeOffOutline size={25} /> : <IoEyeOutline size={25}/>}
             </button>
-            {errors.password && <span className="text-red-500 text-[16px]">{errors.password.message}</span>}
+            {errors.password && <span className="text-left text-red-500 text-[16px]">{errors.password.message}</span>}
           </div>
 
-          {/* Confirm Password */}
           {!isLogin && (
             <div className="relative mt-3">
               <label htmlFor="confirmPassword" className="text-[16px] block text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-1">Confirm Password</label>
@@ -159,18 +154,20 @@ const AuthForm = ({ onLogin }) => {
               >
                 {showConfirmPassword ? <IoEyeOffOutline size={25} /> : <IoEyeOutline size={25}/>}
               </button>
-              {errors.confirmPassword && <span className="text-red-500 text-[16px]">{errors.confirmPassword.message}</span>}
+              {errors.confirmPassword && <span className="text-left text-red-500 text-[16px]">{errors.confirmPassword.message}</span>}
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-[#5EB66E] text-white py-2  font-bold rounded-md hover:bg-[5EB66E] transition duration-300 mt-4 text-[16px]"
+            className="font-sans w-full bg-[#5EB66E] text-white py-2  font-bold rounded-md hover:bg-[5EB66E] transition duration-300 mt-4 text-[16px]"
           >
             {isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
+        
+        {/* Toast Container */}
+        <ToastContainer position="top-center" autoClose={2000} />
       </div>
     </div>
   );

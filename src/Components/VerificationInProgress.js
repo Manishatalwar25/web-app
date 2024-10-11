@@ -1,22 +1,51 @@
 import React, { useState } from 'react';
-import Sidebar from "./Layout/Sidebar";
 import { useNavigate } from 'react-router-dom';
+import { BiLogOutCircle } from "react-icons/bi";
+import Swal from 'sweetalert2';
 const VerificationInProgress = () => {
   const navigate = useNavigate();
   const [rangeValue, setRangeValue] = useState(75);
+  
   const handleRangeChange = (e) => {
     setRangeValue(e.target.value);
   };
+  
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you really want to logout?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5EB66E',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, logout!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Logged out!',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        // After the confirmation and success message, navigate to the homepage.
+        setTimeout(() => {
+          navigate('/');
+        }, 2000); // Wait for 2 seconds before navigating
+      }
+    });
+  };
 
   return (
-    <div className="flex justify-center  min-h-screen ">
+    <div className="flex justify-center  min-h-screen font-sans ">
       <div className="bg-white shadow-md rounded-lg w-full max-w-md h-full min-h-screen flex flex-col justify-between ">
         {/* Header */}
         <div>
           <div className="flex items-center  border-b  bg-[#0000]">
             <button onClick={() => {
       navigate('/kyc-profile');
-    }}  className="mr-4 text-[#383838] m-4 ">
+    }}  className="mr-4 text-[#383838] m-4 font-sans">
 
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -33,14 +62,23 @@ const VerificationInProgress = () => {
                 />
               </svg>
             </button>
-            <h1 className="text-[18px] font-extrabold text-[#383838] m-4">
+            <h1 className="text-[18px] font-sans font-extrabold text-[#383838] ">
               Verification in Progress
             </h1>
+            <div className="ml-auto relative group mr-2">
+            <button className="flex items-center font-sans" onClick={handleLogout} >
+          <BiLogOutCircle size={25} className="text-[#383838]" />
+        </button>
+        {/* Tooltip */}
+        <span className="font-sans absolute top-[30px] right-0 w-max px-2 py-1 text-xs text-white bg-gray-600 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+          Logout
+        </span>
+      </div>
           </div>
 
           {/* Credit Check */}
           <div className="p-4 bg-white">
-            <p className="text-[16px] text-[#646464] text-normal text-left mb-4">
+            <p className="font-sans text-[16px] text-[#646464] text-normal text-left mb-4">
               Your credit history looks good. You are eligible for a microloan.
             </p>
 
@@ -58,7 +96,7 @@ const VerificationInProgress = () => {
                 id="idCard"
                 value="xyz.png"
                 disabled
-                className="text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                className="font-sans text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
               />
             </div>
 
@@ -76,7 +114,7 @@ const VerificationInProgress = () => {
                 id="liveSelfie"
                 value="xyz.png"
                 disabled
-                className="text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                className="font-sans text-[16px] w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
               />
             </div>
 
@@ -112,7 +150,7 @@ const VerificationInProgress = () => {
                   height: 30px;
                   width: 30px;
                   border-radius: 50%;
-                  background: white; /* White middle circle */
+                   background: white; /* White middle circle */
                   border: 4px solid #17cee74d; /* Blue outer border */
                   box-shadow: inset 0 0 0 6px white, /* White inner circle */
                     inset 0 0 0 12px #5eb66e; /* Larger grey circle */
@@ -120,25 +158,27 @@ const VerificationInProgress = () => {
 
                 /* Focus state with more blue glow */
                 input[type="range"]:focus::-webkit-slider-thumb {
+                 background: white; /* White middle circle */
+                  border: 4px solid #17cee74d; /* Blue outer border */
                   box-shadow: inset 0 0 0 6px white, /* White inner circle */
-                    inset 0 0 0 10px #5eb66e, /* Larger grey circle */
-                    0px 0px 10px #17cee74d; /* Blue outer glow */
+                    inset 0 0 0 12px #5eb66e; /* Larger grey circle */
                 }
 
                 input[type="range"]:focus::-moz-range-thumb {
+ background: white; /* White middle circle */
+                  border: 4px solid #17cee74d; /* Blue outer border */
                   box-shadow: inset 0 0 0 6px white, /* White inner circle */
-                    inset 0 0 0 10px #5eb66e, /* Larger grey circle */
-                    0px 0px 10px #17cee74d; /* Blue outer glow */
+                    inset 0 0 0 12px #5eb66e; /* Larger grey circle */
                 }
               `}</style>
             </div>
 
-            <p className="text-[12px] mt-1 text-[#646464] mb-7 text-left">
+            <p className="font-sans text-[12px] mt-1 text-[#646464] mb-7 text-left">
               You have completed 75% of the profile & KYC verification process.
             </p>
 
             {/* Compliance Notice */}
-            <div className="p-4 bg-[#5EB66E1A] rounded-lg font-normal text-[16px] text-[#646464] mb-4 text-left">
+            <div className="p-4 font-sans bg-[#5EB66E1A] rounded-lg font-normal text-[16px] text-[#646464] mb-4 text-left">
               To comply with financial regulations, we require you to complete
               the KYC verification process. This helps ensure the security and
               integrity of our platform.
@@ -150,7 +190,7 @@ const VerificationInProgress = () => {
         <div className="p-4">
           <button   onClick={() => {
       navigate('/socialaccount');
-    }}  className="w-full bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
+    }}  className=" font-sans w-full bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
           >
            Continue
           </button>

@@ -1,7 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../Layout/Header";
-import Sidebar from '../Layout/Sidebar';
 import LoanDetail from "../Admin/LoanDetail";
 
 const AdminDashboard = () => {
@@ -9,9 +8,30 @@ const AdminDashboard = () => {
 
   // Sample loan data
   const loanData = [
-    { id: 'L001', name: 'John Doe', amount: 1500, dueDate: '28-09-2024', status1: 'Pending',status2: 'Pending' },
-    { id: 'L002', name: 'Jane Smith', amount: 2000, dueDate: '15-10-2024', status1: 'Approved',status2: 'Pending' },
-    { id: 'L003', name: 'Mark Taylor', amount: 1200, dueDate: '02-11-2024', status1: 'Pending',status2: 'Approved' }
+    {
+      id: "L001",
+      name: "John Doe",
+      amount: 1500,
+      dueDate: "28-09-2024",
+      status1: "Pending",
+      status2: "Pending",
+    },
+    {
+      id: "L002",
+      name: "Jane Smith",
+      amount: 2000,
+      dueDate: "15-10-2024",
+      status1: "Approved",
+      status2: "Pending",
+    },
+    {
+      id: "L003",
+      name: "Mark Taylor",
+      amount: 1200,
+      dueDate: "02-11-2024",
+      status1: "Pending",
+      status2: "Approved",
+    },
   ];
 
   // Function to navigate to loan details page
@@ -24,26 +44,34 @@ const AdminDashboard = () => {
       {/* Header */}
       <Header />
 
-      <div className="flex flex-grow">
+      <div className="font-sans flex flex-grow">
         {/* Sidebar - taking up 20% of the width on large screens, hidden on small screens */}
         {/* <div className="hidden md:block w-1/6">
           <Sidebar />
         </div> */}
 
         {/* Main Content Area - full width on small screens, 80% on large screens */}
-        <div className="w-full md:w-full bg-[#ffff] p-6">
+        <div className="w-full md:w-full bg-[#ffff] p-12">
           {/* Content Area */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-          <div className="flex flex-row items-center space-y-0 space-x-4">
-  <h2 className="text-left text-xl md:text-[32px] font-bold">Loan Management</h2>
-  <select className="px-2 py-3 border-2 border-[#000000] p-2 rounded-lg font-bold !ml-[20px] text-black md:!ml-[40px]">
-    <option value="all" className="font-bold">All</option>
-    <option value="pending" className="font-bold">Pending</option>
-    <option value="approved" className="font-bold">Approved</option>
-  </select>
-</div>
 
-            {/* <button className="bg-[#5EB66E] font-bold text-[16px] text-white px-7 py-3 rounded-lg mt-4 md:mt-0">Add Loan</button> */}
+          <div className="font-sans flex flex-row items-center justify-between mb-6">
+            {/* Left-aligned heading */}
+            <h2 className="text-left text-xl md:text-[32px] font-bold font-sans ">
+              Loan Management
+            </h2>
+
+            {/* Right-aligned dropdown */}
+            <select className="px-2 py-3 border-2 border-[#000000] p-2 rounded-lg font-bold text-black mr-[2%]">
+              <option value="all" className="font-bold font-sans ">
+                All
+              </option>
+              <option value="pending" className="font-bold font-sans">
+                Pending
+              </option>
+              <option value="approved" className="font-bold font-sans">
+                Approved
+              </option>
+            </select>
           </div>
 
           {/* Loan Cards */}
@@ -54,20 +82,26 @@ const AdminDashboard = () => {
                 className="bg-[#F8F8F8] p-6 rounded-lg shadow border border-[#E5E5E5] min-h-[150px] cursor-pointer"
                 onClick={() => handleCardClick(loan.id)}
               >
-                <div className="flex justify-between">
+                <div className="font-sans flex justify-between">
                   <div className="flex flex-col text-left">
-                    <h3 className="text-lg font-semibold mb-1">{loan.id}</h3>
-                    <p className="text-gray-600 mb-1">{loan.name}</p>
-                    <p className="text-gray-800 mb-1">${loan.amount}</p>
-                    <p className="text-gray-500 mb-1">Due Date : {loan.dueDate}</p>
+                    <h3 className="font-sanstext-lg font-semibold mb-1">
+                      {loan.id}
+                    </h3>
+                    <p className="font-sans text-gray-600 mb-1">{loan.name}</p>
+                    <p className="font-sans text-gray-800 mb-1">
+                      ${loan.amount}
+                    </p>
+                    <p className="font-sans text-gray-500 mb-1">
+                      Due Date : {loan.dueDate}
+                    </p>
                   </div>
                   <div className="flex flex-col space-y-2 justify-end">
-                    <button className="border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
+                    <span className="font-sans border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
                       {loan.status1}
-                    </button>
-                    <button className="border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
+                    </span>
+                    {/* <button className="border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
                       {loan.status2}
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
