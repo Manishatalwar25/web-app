@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { BiLogOutCircle } from "react-icons/bi";
+
 import Swal from 'sweetalert2';
 const ApplyForLoan = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;  
   const navigate = useNavigate();
   const [loanAmount, setLoanAmount] = useState(1200);
-  const [repaymentTerm, setRepaymentTerm] = useState("6 Months");
+  const [repaymentTerm, setRepaymentTerm] = useState("6");
 
   const handleSliderChange = (e) => {
     setLoanAmount(e.target.value);
@@ -41,6 +43,63 @@ const ApplyForLoan = () => {
       }
     });
   };
+  const handleSubmit = async () => {
+    // Retrieve the JWT token from localStorage (or sessionStorage or cookies, depending on your app)
+    const token = localStorage.getItem('userToken');  // Assuming you stored it in localStorage after login
+  
+    if (!token) {
+      alert('You need to be logged in to apply for a loan.');
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${BASE_URL}/loans/apply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,  // Add the Authorization header with the token
+        },
+        body: JSON.stringify({
+          amount: loanAmount,
+          repaymentTerm,
+        }),
+      });
+  
+      const result = await response.json();
+  console.log("result",result?.loan?.id);
+  
+      if (result.success) {
+        Swal.fire({
+          text: 'Loan application submitted!',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      
+        navigate('/loanconfirmation', { state: { loanId: result?.loan?.id } });
+      } else {
+        // Use SweetAlert for error instead of alert
+        Swal.fire({
+          text: 'Failed to submit loan application.',
+          icon: 'error',
+          timer: 3000,
+          showConfirmButton: false,
+        });
+      }
+      
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire({
+        
+        text: error,
+        icon: 'error',
+        timer: 3000,
+        showConfirmButton: false,
+      });
+
+    }
+  };
+  
 
   return (
     <div className="flex justify-center  min-h-screen ">
@@ -67,7 +126,7 @@ const ApplyForLoan = () => {
               />
             </svg>
           </button>
-          <h1 className="font-sans text-[18px] font-extrabold text-[#383838] font-sans ">
+          <h1 className="font-sans text-[18px] font-extrabold text-[#383838]  ">
           Apply for a Microloan
           </h1>
           <div className="ml-auto relative group mr-3">
@@ -158,7 +217,7 @@ const ApplyForLoan = () => {
 
           {/* Repayment Term Dropdown */}
           <div className="mt-6">
-          <label htmlFor="firstName" className=" font-sans mb-3 block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left ">Repayment Term</label>
+          <label htmlFor="firstName" className="  mb-3 block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left ">Repayment Term</label>
            
 
           <select
@@ -167,9 +226,31 @@ const ApplyForLoan = () => {
                 onChange={handleRepaymentChange}
                 name="repaymentTerm"
                
-                className="font-sans w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+                className="font-sans w-full px-3 py-2 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
               >
                <option value={3}>3 Months</option>
+              <option value={6}>6 Months</option>
+              <option value={12}>12 Months</option>
+              </select>
+
+
+          
+             </div>
+
+              {/* aCCOUNT  Dropdown */}
+          <div className="mt-6">
+          <label htmlFor="firstName" className="  mb-3 block text-[16px] text-[#8F959E] font-sans text-base leading-[21.82px] text-left ">Account Nubmer</label>
+           
+
+          <select
+                id="repaymentTerm"
+                value={repaymentTerm}
+                onChange={handleRepaymentChange}
+                name="repaymentTerm"
+               
+                className="font-sans w-full px-3 py-2 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-gray-800"
+              >
+               <option value={3}>xxxxxxxxx</option>
               <option value={6}>6 Months</option>
               <option value={12}>12 Months</option>
               </select>
@@ -199,9 +280,7 @@ const ApplyForLoan = () => {
 
       {/* Submit Button at Bottom */}
       <div className="p-4">
-        <button   onClick={() => {
-    navigate('/loanconfirmation');
-  }}  className="w-full font-sans bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
+        <button   onClick={handleSubmit} className="w-full font-sans bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
         >
            Apply for Loan
         </button>

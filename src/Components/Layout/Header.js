@@ -4,7 +4,7 @@ import profile from "../../assets/images/profile.png";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-const Header = () => {
+const Header = ({ searchQuery, setSearchQuery }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -121,10 +121,12 @@ const Header = () => {
           <div className="relative">
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search Loans"
               className="w-full sm:w-[90%] p-3 pl-5 pr-10 rounded-full shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
-            <button className="absolute top-1/2 transform -translate-y-1/2 right-3 md:right-[4.75rem] text-gray-500">
+            <button className="absolute top-1/2 transform -translate-y-1/2 right-5 md:right-[9rem] text-gray-500">
               <svg
                 className="h-5 w-5"
                 fill="none"

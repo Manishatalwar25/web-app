@@ -5,8 +5,14 @@ import { FiUpload } from "react-icons/fi";
 import { CiCamera } from "react-icons/ci";
 import { BiLogOutCircle } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import Swal from "sweetalert2";
 const ProfileKYCForm = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;  
+  const [idCardFileName, setIdCardFileName] = useState("");
+  const [passportFileName, setPassportFileName] = useState("");
+  const [selfieFileName, setSelfieFileName] = useState("");
   const [rangeValue, setRangeValue] = useState(75);
   const handleRangeChange = (e) => {
     setRangeValue(e.target.value);
@@ -20,9 +26,7 @@ const ProfileKYCForm = () => {
 
   const password = watch("password");
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  
 
   const handleLogout = () => {
     Swal.fire({
@@ -50,8 +54,60 @@ const ProfileKYCForm = () => {
       }
     });
   };
+
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("dob", data.dob);
+    formData.append("address", data.address);
+    formData.append("employment", data.employment);
+    formData.append("income", data.income);
+
+    // Attach files (idCard, passport, selfie)
+    if (data.idCard && data.idCard.length > 0) {
+      formData.append("idCard", data.idCard[0]);
+    }
+    if (data.passport && data.passport.length > 0) {
+      formData.append("passport", data.passport[0]);
+    }
+    if (data.selfie && data.selfie.length > 0) {
+      formData.append("selfie", data.selfie[0]);
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/kyc/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        toast.success(response.message || 'KYC data submitted successfully!');
+        setTimeout(() => {
+          navigate("/verification");
+        }, 2000);
+     
+  
+      } else {
+       
+        toast.error("Error!", "Something went wrong!");
+      }
+    } catch (error) {
+      toast.error(error.message || "Error!", "Something went wrong!");
+    }
+  };
+
+  const handleFileChange = (e, setFileName) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFileName(file.name); // Set file name to display below the input
+    }
+  };
+
   return (
-    <div className="font-sans flex justify-center ">
+    <div className="font-sans flex justify-center  ">
       <div className="w-full  max-w-md   bg-white shadow-md rounded-lg ">
         <div className="flex p-4 border-b border-[#5EB66E1A] bg-white shadow-md">
           <button className="mr-4 text-[#383838]">
@@ -74,7 +130,7 @@ const ProfileKYCForm = () => {
             Profile & KYC
           </h1>
           <div className="ml-auto relative group">
-            <button className="flex items-center" onClick={handleLogout}>
+            <button className="flex items-left" onClick={handleLogout}>
               <BiLogOutCircle size={25} className="text-[#383838]" />
             </button>
             {/* Tooltip */}
@@ -107,7 +163,7 @@ const ProfileKYCForm = () => {
                 className="font-sans w-full text-[16px] font-normal   px-3 py-2 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-[#E5E5E5]"
               />
               {errors.name && (
-                <span className="font-sans font-normal  text-red-500 text-[16px]">
+                <span className="font-sans font-normal !text-left  text-red-500 mt-2 text-[16px] mt-1">
                   {errors.name.message}
                 </span>
               )}
@@ -129,7 +185,7 @@ const ProfileKYCForm = () => {
                 className="font-normal font-sans w-full px-3 text-[16px]  py-2 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-[#E5E5E5]"
               />
               {errors.dob && (
-                <span className="font-sans font-normal  text-red-500 text-[16px]">
+                <span className="font-sans font-normal  text-red-500 mt-2 text-[16px]">
                   {errors.dob.message}
                 </span>
               )}
@@ -151,7 +207,7 @@ const ProfileKYCForm = () => {
                 className="w-full font-sans px-3 text-[16px]  py-2 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-[#E5E5E5]"
               />
               {errors.address && (
-                <span className="font-sans font-normal  text-red-500 text-[16px]">
+                <span className="font-sans font-normal  text-red-500 mt-2 text-[16px]">
                   {errors.address.message}
                 </span>
               )}
@@ -161,7 +217,7 @@ const ProfileKYCForm = () => {
             <div>
               <label
                 htmlFor="employment"
-                className="font-sans font-normal  block text-[16px]  text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-2"
+                className=" font-normal  block text-[16px]  text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-2"
               >
                 Employment Status
               </label>
@@ -180,7 +236,7 @@ const ProfileKYCForm = () => {
                 <option value="Student">Student</option>
               </select>
               {errors.employment && (
-                <span className="font-sans font-normal  text-red-500 text-[16px]">
+                <span className="font-sans font-normal  text-red-500 mt-2 text-[16px]">
                   {errors.employment.message}
                 </span>
               )}
@@ -190,7 +246,7 @@ const ProfileKYCForm = () => {
             <div>
               <label
                 htmlFor="income"
-                className="font-sans font-normal  block text-[16px]  text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-2"
+                className=" font-normal  block text-[16px]  text-[#8F959E] font-sans text-base leading-[21.82px] text-left mb-2"
               >
                 Annual Income
               </label>
@@ -204,15 +260,12 @@ const ProfileKYCForm = () => {
                 className="w-full font-sans text-[16px] font-normal   px-3 py-2 border border-[#E5E5E5] rounded-md focus:outline-none focus:ring-2 focus:ring-[#E5E5E5]"
               />
               {errors.income && (
-                <span className="font-sans font-normal  text-red-500 text-[16px]">
+                <span className="font-sans font-normal  text-red-500 mt-2 text-[16px]">
                   {errors.income.message}
                 </span>
               )}
             </div>
-          </form>
-        </div>
-
-        {/* Bank Account Section */}
+             {/* Bank Account Section */}
         <div className=" bg-[#FFFFFF] mt-6">
           <h2 className="font-sans text-[18px] font-bold tracking-wide text-[#383838] mb-2 bg-[#5EB66E1A] p-4 rounded text-left">
             Bank Account
@@ -230,123 +283,86 @@ const ProfileKYCForm = () => {
           <h2 className="text-[18px] font-sans font-bold tracking-wide text-[#383838] mb-7 bg-[#5EB66E1A] p-4 rounded text-left">
             KYC Verification
           </h2>
-          <div className="p-4">
+          <div >
             {/* Upload ID Card */}
+            {/* ID Card Upload */}
             <div className="border border-[#E5E5E5] p-4 mb-10 rounded-lg bg-white">
-              <h3 className="font-sans text-[17px] font-semibold text-[#0D0D0D] text-left">
-                Upload ID Card
-              </h3>
-              <p className="font-sans text-[16px] text-[#646464] mb-2 text-left">
-                Document size has to be less than 5MB
-              </p>
+  <h3 className="text-[17px] font-semibold text-[#0D0D0D]">Upload ID Card</h3>
+  <p className="text-[16px] text-[#646464] mb-2">Document size has to be less than 5MB</p>
+  <div className="border-2 border-dashed border-[#5EB66E] py-4 px-4 text-[#646464] rounded-md cursor-pointer">
+    <label className="flex justify-center items-center cursor-pointer">
+      <span className="mr-2">Upload Img or PDF</span>
+      <FiUpload size={26} />
+      <input
+        type="file"
+        id="idCard"
+        {...register("idCard", {
+          required: "ID card upload is required",
+        })}
+        onChange={(e) => handleFileChange(e, setIdCardFileName)}
+        className="hidden"
+      />
+    </label>
+  </div>
+  {idCardFileName && <p className="text-green-500 mt-2 text-center">{idCardFileName}</p>}
+  {errors.idCard && (
+    <span className="text-red-500 mt-2 text-center ">{errors.idCard.message}</span>
+  )}
+</div>
 
-              {/* Center the "Upload Img or PDF" text and icon in one line */}
-              <div className="border-2 border-dashed border-[#5EB66E] py-4 px-4 text-[#646464]  rounded-md hover:bg-gray-50 cursor-pointer">
-                <label
-                  htmlFor="idCard"
-                  className="font-sans flex flex-row justify-center items-center cursor-pointer"
-                >
-                  <span className="text-[#0D0D0D] font-sans font-semibold mr-2 text-[16px]">
-                    Upload Img or PDF
-                  </span>
-                  <FiUpload size={26} color="#0D0D0D" />
-                  <input
-                    type="file"
-                    id="idCard"
-                    name="idCard"
-                    {...register("idCard", {
-                      required: "ID card upload is required",
-                    })}
-                    className="hidden font-sans"
-                  />
-                </label>
-              </div>
+{/* Passport Upload */}
+<div className="border border-[#E5E5E5] p-4 mb-10 rounded-lg bg-white ">
+  <h3 className="text-[17px] font-semibold text-[#0D0D0D]">Upload Passport</h3>
+  <p className="text-[16px] text-[#646464] mb-2">Document size has to be less than 5MB</p>
+  <div className="border-2 border-dashed border-[#5EB66E] py-4 px-4 text-[#646464] rounded-md cursor-pointer">
+    <label className="flex justify-center items-center cursor-pointer">
+      <span className="mr-2">Upload Img or PDF</span>
+      <FiUpload size={26} />
+      <input
+        type="file"
+        id="passport"
+        {...register("passport", {
+          required: "Passport upload is required",
+        })}
+        onChange={(e) => handleFileChange(e, setPassportFileName)}
+        className="hidden"
+      />
+    </label>
+  </div>
+  {passportFileName && <p className="text-green-500 mt-2 text-center">{passportFileName}</p>}
+  {errors.passport && (
+    <span className="text-red-500 mt-2 text-center">{errors.passport.message}</span>
+  )}
+</div>
 
-              {errors.idCard && (
-                <span className="font-sans text-red-500 text-[16px]">
-                  {errors.idCard.message}
-                </span>
-              )}
-            </div>
+{/* Selfie Upload */}
+<div className="border border-[#E5E5E5] p-4 rounded-lg bg-white">
+  <h3 className="text-[17px] font-semibold text-[#0D0D0D]">Take a Selfie</h3>
+  <div className="border-2 border-dashed border-[#5EB66E] py-4 px-4 text-[#646464] rounded-md cursor-pointer">
+    <label className="flex justify-center items-center cursor-pointer">
+      <span className="mr-2">Take a Selfie</span>
+      <CiCamera size={29} />
+      <input
+        type="file"
+        id="selfie"
+        {...register("selfie", {
+          required: "Selfie upload is required",
+        })}
+        onChange={(e) => handleFileChange(e, setSelfieFileName)}
+        className="hidden"
+      />
+    </label>
+  </div>
+  {selfieFileName && <p className="text-green-500 mt-2 text-center">{selfieFileName}</p>}
+  {errors.selfie && (
+    <span className="text-red-500 mt-2 text-center">{errors.selfie.message}</span>
+  )}
+</div>
 
-            {/* Upload Passport */}
-            <div className="border border-[#E5E5E5] p-4 mb-10 rounded-lg bg-white">
-              <h3 className="text-[17px] font-sans font-semibold text-[#0D0D0D] text-left">
-                Upload Passport
-              </h3>
-              <p className="text-[16px] font-sans text-[#646464] mb-2 text-left">
-                Document size has to be less than 5MB
-              </p>
-              <div className="border-2 border-dashed border-[#5EB66E] py-4 px-4 text-[#646464]  rounded-md hover:bg-gray-50 cursor-pointer">
-                <label
-                  htmlFor="passport"
-                  className="font-sans flex flex-row justify-center items-center cursor-pointer"
-                >
-                  <span className="text-[#0D0D0D] font-sans  font-semibold mr-2 text-[16px]">
-                    Upload Img or PDF
-                  </span>
-                  <FiUpload size={26} color="#0D0D0D" />
-                  <input
-                    type="file"
-                    id="passport"
-                    name="passport"
-                    {...register("passport", {
-                      required: "Passport upload is required",
-                    })}
-                    className="hidden font-sans"
-                  />
-                </label>
-              </div>
-              {errors.passport && (
-                <span className="font-sans text-red-500 text-[16px]">
-                  {errors.passport.message}
-                </span>
-              )}
-            </div>
-
-            {/* Take a Selfie */}
-
-            <div className="border border-[#E5E5E5] p-4 rounded-lg bg-white">
-              <h3 className="font-sans text-[17px] font-semibold text-[#0D0D0D] text-left">
-                Upload ID Card
-              </h3>
-              <p className="font-sans text-[16px] text-[#646464] mb-2 text-left">
-                Document size has to be less than 5MB
-              </p>
-
-              {/* Center the "Take a Selfie" text and icon in one line */}
-              <div className="border-2 border-dashed border-[#5EB66E] py-4 px-4 text-[#646464]  rounded-md hover:bg-gray-50 cursor-pointer">
-                <label
-                  htmlFor="selfie"
-                  className="font-sans flex flex-row justify-center items-center cursor-pointer"
-                >
-                  <span className="text-[#0D0D0D] font-semibold text-[16px] mr-2">
-                    Take a Selfie
-                  </span>
-                  <CiCamera size={29} color="#0D0D0D" />
-                  <input
-                    type="file"
-                    id="selfie"
-                    name="selfie"
-                    {...register("selfie", {
-                      required: "Selfie upload is required",
-                    })}
-                    className="hidden font-sans"
-                  />
-                </label>
-              </div>
-
-              {errors.selfie && (
-                <span className="font-sans text-red-500 text-[16px]">
-                  {errors.selfie.message}
-                </span>
-              )}
-            </div>
           </div>
         </div>
-
-        {/* Compliance Notice Section */}
-        <div className="p-4 pt-1 bg-[#FFFFFF]">
+          {/* Compliance Notice Section */}
+          <div className="pt-1 bg-[#FFFFFF]">
           <h2 className="text-[18px] font-sans font-bold text-[#383838]  p-2 rounded text-left">
             Compliance Notice
           </h2>
@@ -360,16 +376,21 @@ const ProfileKYCForm = () => {
         </div>
 
         <div className="p-4">
-          <button
-            onClick={() => {
-              navigate("/verification");
-            }}
-            className="font-sans w-full bg-[#5EB66E] text-[#ffff] py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E] focus:outline-none focus:ring-2 focus:ring-[#5EB66E]"
-          >
-            Submit for Verification
-          </button>
+        <button
+                type="submit"
+                className="w-full bg-[#5EB66E] text-white py-3 text-[16px] font-semibold rounded-md hover:bg-[#469F5E]"
+              >
+                Submit for Verification
+              </button>
         </div>
+          </form>
+        </div>
+
+       
+
+      
       </div>
+      <ToastContainer position="top-center" autoClose={2000} />
     </div>
   );
 };

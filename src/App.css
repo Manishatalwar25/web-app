@@ -1,5 +1,7 @@
-.App {
-  text-align: center;
+html, body {
+  height: 100%; /* Ensure both take up the full height */
+  margin: 0; /* Remove default margin */
+  overflow: auto; /* Allow scrolling */
 }
 
 .App-logo {
@@ -15,7 +17,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: auto !important;/* Change from min-height to height: auto */
   display: flex;
   flex-direction: column;
   align-items: center;

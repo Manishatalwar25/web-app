@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import Loader from "../Loader";
+import Swal from 'sweetalert2';
 import Header from "../Layout/Header";
 import { useNavigate } from "react-router-dom";
 
-const AdminDashboard = () => {
+const UserList = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;  
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -20,26 +21,23 @@ const AdminDashboard = () => {
   const fetchUsers = async (page) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("adminToken");
-      const response = await fetch(
-        `${BASE_URL}/admin/users?page=${page}&limit=10`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${BASE_URL}/admin/users?page=${page}&limit=10`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
 
       if (data.success) {
         setUsers(data.users);
         setTotalPages(data.totalPages);
       } else {
-        console.error("Failed to fetch users:", data.message);
+        console.error('Failed to fetch users:', data.message);
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
@@ -54,9 +52,8 @@ const AdminDashboard = () => {
   );
 
   // Function to handle card click (navigate to user details)
-  const handleCardClick = (user,userId) => {
-  
-    navigate(`/admin/userloanlist/${userId}`, { state: { user } });
+  const handleCardClick = (userId) => {
+    navigate(`/user/${userId}`);
   };
 
   return (
@@ -81,16 +78,14 @@ const AdminDashboard = () => {
                 <div
                   key={user.id}
                   className="bg-[#F8F8F8] p-6 rounded-lg shadow border border-[#E5E5E5] min-h-[150px] cursor-pointer"
-                  onClick={() => handleCardClick(user,user.id)}
+                  onClick={() => handleCardClick(user.id)}
                 >
                   <div className="font-sans flex justify-between">
                     <div className="flex flex-col text-left">
                       <h3 className="font-sans text-lg font-semibold mb-1">
                         {user.firstName} {user.lastName}
                       </h3>
-                      <p className="font-sans text-gray-600 mb-1">
-                        {user.email}
-                      </p>
+                      <p className="font-sans text-gray-600 mb-1">{user.email}</p>
                       <p className="font-sans text-gray-800 mb-1">
                         Loans: {user.loans.length}
                       </p>
@@ -98,11 +93,11 @@ const AdminDashboard = () => {
                     <div className="flex flex-col space-y-2 justify-end">
                       {/* Display the number of pending loans */}
                       <span className="font-sans border-2 border-black font-bold text-black py-1 px-4 rounded-lg">
-                        {user?.loans && user.loans.length > 0
-                          ? user.loans.some((loan) => loan.status === "Pending")
-                            ? "Pending Loans" // Show this if there's any loan with status "Pending"
-                            : "No pending Loans" // Show this if there are loans with status "Approved" or "Rejected"
-                          : "No Loans"}
+                      {user?.loans && user.loans.length > 0
+  ? user.loans.some((loan) => loan.status === "Pending")
+    ? "Pending Loans"  // Show this if there's any loan with status "Pending"
+    : "No pending Loans"  // Show this if there are loans with status "Approved" or "Rejected"
+  : "No Loans"} 
                       </span>
                     </div>
                   </div>
@@ -121,9 +116,7 @@ const AdminDashboard = () => {
                 onClick={() => setPage(page - 1)}
                 disabled={page === 1}
                 className={`px-4 py-2 text-lg rounded-md transition ${
-                  page === 1
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-[#5EB66E] text-white hover:bg-green-600"
+                  page === 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#5EB66E] text-white hover:bg-green-600'
                 }`}
               >
                 Previous
@@ -135,9 +128,7 @@ const AdminDashboard = () => {
                 onClick={() => setPage(page + 1)}
                 disabled={page === totalPages}
                 className={`px-4 py-2 text-lg rounded-md transition ${
-                  page === totalPages
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-[#5EB66E] text-white hover:bg-green-600"
+                  page === totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#5EB66E] text-white hover:bg-green-600'
                 }`}
               >
                 Next
@@ -150,4 +141,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default UserList;
